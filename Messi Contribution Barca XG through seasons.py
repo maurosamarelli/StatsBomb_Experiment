@@ -2,7 +2,6 @@
 # coding: utf-8
 
 import os
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 path = "C:/Users/Mauro/Documents/open-data/data"
@@ -15,7 +14,7 @@ print(competitions)
 def calculate_percentage_xg_messi(competitionId, seasonId, season_name):
     print("Processing " + season_name)
     matches = pd.read_json(os.path.join(path, "matches/" + str(competitionId) + "/" + str(seasonId) + ".json"))
-    xg_messi, xg_barca, pres = 0, 0, 0
+    xg_messi, xg_barca = 0, 0
     for matchId in matches.match_id.unique():
         events = pd.read_json(os.path.join(path, "events/" + str(matchId) + ".json"))
         shots = events[events.shot == events.shot]
@@ -44,3 +43,6 @@ plt.figure(figsize=(20, 8))
 plt.plot(sorted_dict, sorted_values, marker='o')
 plt.ylim(0, 60)
 plt.title("% Contribution XG Team")
+
+for i in range(len(sorted_values)-1):
+    print(sorted_dict[i], ((sorted_values[i+1] / sorted_values[i]) - 1) * 100)
